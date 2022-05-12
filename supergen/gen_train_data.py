@@ -29,10 +29,13 @@ task_type_mapping = {
     "mnli": "pair",
     "qqp": "pair",
     "qnli": "pair",
-    "sst-2": "single",
+    "imdb": "single",
     "cola": "single",
     "rte": "pair",
     "mrpc": "pair",
+    "rct": "single",
+    "rct_2": "pair",
+    "amazon":"single",
 }
 
 # Control code used by CTRL as the starting token
@@ -40,16 +43,20 @@ control_code_mapping = {
     "mnli": "Wikipedia",
     "qqp": "Links",
     "qnli": "Links",
-    "sst-2": "Reviews",
+    "imdb": "Reviews",
     "cola": "Links",
     "rte": "Wikipedia",
     "mrpc": "Wikipedia",
+    "rct": "Science",
+    "rct_2": "Science",
+    "amazon": "Reviews"
 }
 
 # If specified, generation will start with one of the given options
 fix_start_mapping = {
-    "sst-2": ["The movie", "The film", "This movie", "This film",
-              "the movie", "the film", "this movie", "this film"],
+    "imdb": ["The movie", "The film", "This movie", "This film",
+             "the movie", "the film", "this movie", "this film",
+              "The show", "This show","the show",  "this show"],
     "cola": ['Such', 'Again', 'Until', 'Her', 'Any', 'These', 'Where', 'She', 'The', 'We',
              'Both', 'Under', 'At', 'Of', 'Doing', "You're", 'More', 'Between', 'All',
              'While', 'As', 'Our', 'Just', 'Once', 'His', 'Other', 'Most', 'In', 'My', 'Ours',
@@ -65,10 +72,13 @@ stop_tokens_mapping = {
     "mnli": ['. '],
     "qqp": ['? ', '?\n'],
     "qnli": ['. '],
-    "sst-2": ['. ', '? ', '! ', '\n'],
+    "imdb": ['. ', '? ', '! ', '\n'],
     "cola": ['. ', '? ', '! '],
     "rte": ['. '],
     "mrpc": ['. '],
+    "rct":['. '],
+    "rct_2":['. '],
+    "amazon": ['. ', '? ', '! ', '\n'],
 }
 
 # Generated sequences containing bad tokens will be discarded
@@ -76,10 +86,13 @@ bad_tokens_mapping = {
     "mnli": ['\n'],
     "qqp": ['\n'],
     "qnli": ['?', '\n'],
-    "sst-2": ['"', '“', '”', '\n'],
+    "imdb": ['"', '“', '”', '\n'],
     "cola": ['"', '“', '”', '\n'],
     "rte": ['\n'],
     "mrpc": ['\n'],
+    "rct": ['!', '?', '\n'],
+    "rct_2": ['!', '?', '\n'],
+    "amazon": ['"', '“', '”', '\n'],
 }
 
 # Prompts used by different tasks
@@ -99,11 +112,7 @@ prompt_mapping = {
         "entailment": "",
         "not_entailment": "...",
     },
-    "sst-2": {
-        "0": "Rating: 1.0",
-        "1": "Rating: 5.0",
-    },
-    "cola": {
+    "cola": { 
         "0": "",
         "1": "",
     },
@@ -115,6 +124,36 @@ prompt_mapping = {
         "entailment": "In other words,",
         "not_entailment": "Furthermore,",
     },
+    "chemprot": {
+
+    },
+    "rct":{
+        "CONCLUSIONS": "The conclusion drawn from this medical research is that ",
+        "OBJECTIVE": "The goal of this medical research is to",
+        "RESULTS": "The result of this medical experiment:",
+        #"METHODS":"Methods of this medical research is",
+        #"BACKGROUND": "The background of this medical research is",
+        #"TEST":"In a shocking finding, scientist discovered a herd of unicorns living in a remote, previously unexplored valley, in the Andes Mountains. Even more surprising to the researchers was the fact that the unicorns spoke perfect English."
+    },
+    "rct_2":{
+        "CONCLUSIONS": "The conclusion drawn from this medical research is that ",
+        "RESULTS": "The result of this medical experiment:",
+        "OBJECTIVE": ("One Biomedical study has the objective that", "Another Biomedical study has the objective that"),
+        #"METHODS":"Methods of this medical research is",
+        #"BACKGROUND": "The background of this medical research is",
+        #"TEST":"In a shocking finding, scientist discovered a herd of unicorns living in a remote, previously unexplored valley, in the Andes Mountains. Even more surprising to the researchers was the fact that the unicorns spoke perfect English."
+    },
+    "imdb": {
+        "0": "Rating: 1.0",
+        "1": "Rating: 5.0",
+    },
+    "amazon":{
+        "Helpful": "Helpful review",
+        "Unhelpful": "Unhelpful review",
+    }
+
+
+        
 }
 
 # repetition reward/penalty parameters
@@ -132,7 +171,7 @@ repetition_mapping = {
         "entailment": [0.9, 1.2],
         "neutral": [0.9, 1.2],
     },
-    "sst-2": {
+    "imdb": {
         "0": [1.2],
         "1": [1.2],
     },
@@ -148,11 +187,28 @@ repetition_mapping = {
         "entailment": [0.8, 1.1],
         "not_entailment": [1.1, 1.1],
     },
+    "rct": {
+        "CONCLUSIONS":[1.2],
+        "OBJECTIVE":[1.2],
+        "RESULTS":[1.2],
+        "METHODS":[1,2],
+        "BACKGROUND":[1,2],
+        "TEST":[1.2],
+    },
+    "rct_2": {
+        "Conclusions":[1.2],
+        "Objective":[1.2],
+        "Results":[1.2],
+    },
+    "amazon": {
+        "Helpful": [1.2],
+        "Unhelpful": [1.2],
+    },
 }
 
 # If specified, the stop token leading to the longest sequence (instead of the shortest by default) will be used to terminate a sequence
 find_last_stop_token = {
-    "sst-2"
+    "imdb", "rct", "rct_2", "amazon"
 }
 
 # If specified, use different temperature values when generating sequences
