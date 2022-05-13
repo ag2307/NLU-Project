@@ -1,0 +1,18 @@
+python gen_train_data.py --task imdb --label 0 --save_dir hhh --num_gen 10000 --temperature 0.5 --max_len 100
+
+
+
+python src/gen_utils.py --task amazon --num_select_samples 6000 --read_dir raw_amazon --save_dir gen_data
+
+
+
+curl -Lo train.jsonl https://allennlp.s3-us-west-2.amazonaws.com/dont_stop_pretraining/data/ag/train.jsonl
+curl -Lo dev.jsonl https://allennlp.s3-us-west-2.amazonaws.com/dont_stop_pretraining/data/ag/dev.jsonl
+curl -Lo test.jsonl https://allennlp.s3-us-west-2.amazonaws.com/dont_stop_pretraining/data/ag/test.jsonl
+
+
+
+
+python train.py --model_name chemprot_train --data_file chemprot_train.csv --batch 128
+
+python generate.py --model_name chemprot_train.pt --sentences 10 --label INHIBITOR
